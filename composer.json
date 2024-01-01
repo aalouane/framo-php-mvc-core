@@ -1,0 +1,15 @@
+{
+    "name": "soufiane/framo",
+    "author": [
+      {
+        "name": "Aalouane Soufiane",
+        "email": "aalouane.s@gmail.com"
+      }
+    ],
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+    "require": {}
+}
