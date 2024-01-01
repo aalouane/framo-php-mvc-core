@@ -8,7 +8,7 @@ use app\core\Application;
 $app = new Application();
 
 // Routes:
-$app->route('/', function(){
+$app->router->get('/', function(){
   return "Hello World";
 });
 
