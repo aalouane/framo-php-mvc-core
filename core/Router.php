@@ -24,10 +24,11 @@ class Router{
   public function resolve(){
 
     $path = $this->request->getPath();
+    $method = $this->request->getMethod();
 
-    echo "<pre>";
-    var_dump($path);
-    echo "</pre>";
+
+    echo $path;
+    echo "\n".$method;
   }
 }
 
