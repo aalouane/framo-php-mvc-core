@@ -6,7 +6,8 @@ namespace app\core;
  * undocumented class
  */
 
-class Router{
+class Router
+{
 
   public Request $request;
   protected array $routes = [];
@@ -16,23 +17,51 @@ class Router{
     $this->request = $request;
   }
 
-  public function get($path, $callback){
+  public function get($path, $callback)
+  {
 
     $this->routes["get"][$path] = $callback;
   }
 
-  public function resolve(){
+  public function resolve()
+  {
 
     $path = $this->request->getPath();
     $method = $this->request->getMethod();
     $callback = $this->routes[$method][$path] ?? false;
-    
-    if($callback == false) {
-      echo "Not found";
-      exit;
+
+    if ($callback == false) {
+      return "Not found";
     }
 
-    echo call_user_func($callback);
+    if (is_string($callback)) {
+      return $this->renderView($callback);
+    }
+
+    return call_user_func($callback);
+  }
+
+  public function renderView($view) {
+
+    $contentLayout = $this->layoutContent();
+    $viewContent = $this->renderOnlyView($view);
+
+    return str_replace("{{content}}", $viewContent, $contentLayout);
+  }
+
+  protected function layoutContent() {
+
+    ob_start();
+    include_once  Application::$ROOT_PATH . "/views/layouts/main.php";
+    
+    return ob_get_clean();
+  }
+
+  protected function renderOnlyView($view) {
+
+    ob_start();
+    include_once  Application::$ROOT_PATH . "/views/$view.php";
+    
+    return ob_get_clean();
   }
 }
-
