@@ -5,8 +5,8 @@ namespace app\core;
 class Request
 {
 
-  public function getPath(){
-
+  public function getPath()
+  {
     // http://localhost:8000/contact?id=61
     $path = $_SERVER["REQUEST_URI"] ?? "/";
     $position = strpos($path, "?");
@@ -18,9 +18,9 @@ class Request
     return substr($path, 0, $position);
   }
 
-  
-  public function getMethod(){
 
+  public function getMethod()
+  {
     return strtolower($_SERVER["REQUEST_METHOD"]);
   }
 }
