@@ -10,27 +10,28 @@ class Router
 {
 
   public Request $request;
+  public Response $response;
   protected array $routes = [];
 
-  public function __construct(Request $request)
+  public function __construct(Request $request, Response $response)
   {
     $this->request = $request;
+    $this->response = $response;
   }
 
   public function get($path, $callback)
   {
-
     $this->routes["get"][$path] = $callback;
   }
 
   public function resolve()
   {
-
     $path = $this->request->getPath();
     $method = $this->request->getMethod();
     $callback = $this->routes[$method][$path] ?? false;
 
     if ($callback == false) {
+      $this->response->setStatusCode(404);
       return "Not found";
     }
 
@@ -41,7 +42,8 @@ class Router
     return call_user_func($callback);
   }
 
-  public function renderView($view) {
+  public function renderView($view)
+  {
 
     $contentLayout = $this->layoutContent();
     $viewContent = $this->renderOnlyView($view);
@@ -49,19 +51,21 @@ class Router
     return str_replace("{{content}}", $viewContent, $contentLayout);
   }
 
-  protected function layoutContent() {
+  protected function layoutContent()
+  {
 
     ob_start();
     include_once  Application::$ROOT_PATH . "/views/layouts/main.php";
-    
+
     return ob_get_clean();
   }
 
-  protected function renderOnlyView($view) {
+  protected function renderOnlyView($view)
+  {
 
     ob_start();
     include_once  Application::$ROOT_PATH . "/views/$view.php";
-    
+
     return ob_get_clean();
   }
 }

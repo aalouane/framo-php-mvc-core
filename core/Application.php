@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace app\core;
 
@@ -7,22 +7,27 @@ namespace app\core;
  * undocumented class
  */
 
-class Application{
+class Application
+{
 
   public static $ROOT_PATH;
   public Request $request;
   public Router $router;
+  public Response $response;
+  public static Application $app;
 
-  public function __construct($rootpath){
+  public function __construct($rootpath)
+  {
+    self::$ROOT_PATH = $rootpath;
+    self::$app = $this;
 
-    $this::$ROOT_PATH = $rootpath;
     $this->request = new Request();
-    $this->router = new Router($this->request);
+    $this->response = new Response();
+    $this->router = new Router($this->request, $this->response);
   }
 
-  public function run(){
-
+  public function run()
+  {
     echo $this->router->resolve();
   }
-
 }

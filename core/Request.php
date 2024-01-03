@@ -7,6 +7,7 @@ class Request
 
   public function getPath(){
 
+    // http://localhost:8000/contact?id=61
     $path = $_SERVER["REQUEST_URI"] ?? "/";
     $position = strpos($path, "?");
 
