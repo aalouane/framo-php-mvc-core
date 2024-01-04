@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\core\Controller;
+use app\core\Request;
 
 class SiteController extends Controller
 {
@@ -22,8 +23,10 @@ class SiteController extends Controller
     return $this->render("contact");
   }
 
-  public function handlingContact()
+  public function handlingContact(Request $request)
   {
+    $body = $request->getBody();
+    
     return "handlingConttact";
   }
 

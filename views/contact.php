@@ -1,6 +1,6 @@
  <h1>Contact</h1>
 
- <form action="" method="post">
+ <form action="contact" method="post">
    <div class="mb-3">
      <label>Subject</label>
      <input type="text" class="form-control" name="subject" >
