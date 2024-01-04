@@ -12,11 +12,17 @@ class Router
   public Request $request;
   public Response $response;
   protected array $routes = [];
+  private string $layout = "main";
 
   public function __construct(Request $request, Response $response)
   {
     $this->request = $request;
     $this->response = $response;
+  }
+
+  public function setLayout($layout)
+  {
+    return $this->layout = $layout;
   }
 
   public function get($path, $callback)
@@ -63,9 +69,8 @@ class Router
 
   protected function layoutContent()
   {
-
     ob_start();
-    include_once  Application::$ROOT_PATH . "/views/layouts/main.php";
+    include_once  Application::$ROOT_PATH . "/views/layouts/$this->layout.php";
 
     return ob_get_clean();
   }
