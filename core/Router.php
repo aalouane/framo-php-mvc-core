@@ -44,14 +44,20 @@ class Router
       return $this->renderView($callback);
     }
 
+    if (is_array($callback)) {
+      $obj = new $callback[0];
+      $method = $callback[1];
+      return call_user_func([$obj, $method]);
+    }
+
     return call_user_func($callback);
   }
 
-  public function renderView($view)
+  public function renderView($view, $params = [])
   {
 
     $contentLayout = $this->layoutContent();
-    $viewContent = $this->renderOnlyView($view);
+    $viewContent = $this->renderOnlyView($view, $params);
 
     return str_replace("{{content}}", $viewContent, $contentLayout);
   }
@@ -65,8 +71,12 @@ class Router
     return ob_get_clean();
   }
 
-  protected function renderOnlyView($view)
+  protected function renderOnlyView($view, $params = [])
   {
+    // create real variables from params
+    foreach ($params as $key => $value) {
+      $$key = $value;
+    }
 
     ob_start();
     include_once  Application::$ROOT_PATH . "/views/$view.php";

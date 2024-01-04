@@ -2,17 +2,24 @@
 
 namespace app\controllers;
 
-class SiteController
+use app\core\Controller;
+
+class SiteController extends Controller
 {
 
   public function home()
   {
-    return "home";
+    $params = [
+      "name" => "Soufiane",
+      "age" => 36
+    ];
+
+    return $this->render("home", $params);
   }
 
   public function contact()
   {
-    return "contact";
+    return $this->render("contact");
   }
 
   public function handlingContact()
