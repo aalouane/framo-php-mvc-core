@@ -28,10 +28,11 @@ class AuthController extends Controller
     $register = new Register();
     $register->loadData($request->getBody());
 
-    if($register->validate() && $register->register()) {
+    if($register->validate() ) {
       return "Successfully registered";
     }
-  
+
+    var_dd($register->errors);
     $body = $request->getBody();
 
     return "Register Handling data";

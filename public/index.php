@@ -21,3 +21,11 @@ $app->router->post('/contact', [SiteController::class, 'handlingContact']);
 
 // Lunch the main app
 $app->run();
+
+// For debugin
+function var_dd($tab)
+{
+  echo "<pre>";
+  var_dump($tab);
+  echo "</pre>";
+}
