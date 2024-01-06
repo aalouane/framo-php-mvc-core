@@ -9,18 +9,20 @@ use app\models\Register;
 class AuthController extends Controller
 {
 
-  public function login()
+  public function __construct()
   {
     $this->setLayout('auth');
+    
+  }
+
+  public function login()
+  {
     return $this->render("login");
   }
 
   public function register()
   {
-    $register = new Register();
-    $this->setLayout('auth');
-
-    return $this->render("register", ["model"=>$register]);
+    return $this->render("register", ["model"=> new Register()]);
   }
 
   public function registerStore(Request $request)
@@ -32,9 +34,6 @@ class AuthController extends Controller
       return "Successfully registered";
     }
 
-    var_dd($register->errors);
-    $body = $request->getBody();
-
-    return "Register Handling data";
+    return $this->render("register", ["model" => $register]);
   }
 }
