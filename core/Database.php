@@ -21,5 +21,32 @@ class Database
     $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
   }
 
+  public function applyMigrations()
+  {
+    $this->createMigrationsTable();
+    $this->getApplieMigrations();
 
+    $files = scandir(Application::$ROOT_PATH . "/migrations");
+
+    var_dd($files);
+  }
+
+  public function createMigrationsTable()
+  {
+    $sql = "CREATE TABLE IF NOT EXISTS `migrations` (
+  `id` int(10) PRIMARY KEY NOT NULL,
+  `migration` varchar(255) NOT NULL,
+  `created_at`timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+
+    $this->pdo->exec($sql);
+  }
+
+  public function getApplieMigrations()
+  {
+    $statement = $this->pdo->prepare("SELECT migration FROM migrations");
+    $statement->execute();
+
+    return $statement->fetchAll(\PDO::FETCH_COLUMN);
+  }
 }
