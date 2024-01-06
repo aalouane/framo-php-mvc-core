@@ -6,11 +6,11 @@ use app\core\Model;
 
 class Register extends Model
 {
-  protected string $firstname;
-  protected string $lastname;
-  protected string $email;
-  protected string $password;
-  protected string $confirmPassword;
+  public string $firstname = '';
+  public string $lastname = '';
+  public string $email = '';
+  public string $password = '';
+  public string $confirmPassword = '';
 
   public function rules(): array
   {
@@ -21,5 +21,10 @@ class Register extends Model
       'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 4], [self::RULE_MAX, 'max' => 24]],
       'confirmPassword' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']]
     ];
+  }
+
+  public function echo($message)
+  {
+    echo $message;
   }
 }

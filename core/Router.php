@@ -77,7 +77,7 @@ class Router
 
   protected function renderOnlyView($view, $params = [])
   {
-    // create real variables from params
+    // create real variables from params names
     foreach ($params as $key => $value) {
       $$key = $value;
     }
