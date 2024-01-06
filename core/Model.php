@@ -26,17 +26,19 @@ abstract class Model
   public function validate()
   {
     // rules should defined in the subclass 
-    $rules = $this->rules();
+    $rules = $this->rules(); // rules = ['firstname' => [self::RULE_REQUIRED],]
     foreach ($rules as $modelField => $rules) {
-      $value = $this->{$modelField};
+      $value = $this->{$modelField}; // value = $register->firstname
+
       foreach ($rules as $rule) {
-        $ruleName = $rule;
+        $ruleName = $rule; // ruleName = [self::RULE_REQUIRED] | [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']]
+
         if (is_array($rule)) {
-          $ruleName = $ruleName[0];
-        } 
+          $ruleName = $ruleName[0]; // self::RULE_REQUIRED]
+        }
 
         // Check rules for model fields
-        if($ruleName === self::RULE_REQUIRED && !$value) {
+        if ($ruleName === self::RULE_REQUIRED && !$value) {
           $this->addError($modelField, self::RULE_REQUIRED);
         }
         if ($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
@@ -48,6 +50,7 @@ abstract class Model
         if ($ruleName === self::RULE_MAX && strlen($value) > $rule['max']) {
           $this->addError($modelField, self::RULE_MAX, $rule);
         }
+        // {$rule['match']} = password
         if ($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']}) {
           $this->addError($modelField, self::RULE_MATCH, $rule);
         }
@@ -78,4 +81,14 @@ abstract class Model
     ];
   }
 
+  // replace this two methods(hasError, getError) with just one
+  public function hasError($attribute)
+  {
+    return $this->errors[$attribute] ?? false;
+  }
+  
+  public function getError($attribute)
+  {
+    return $this->errors[$attribute][0] ?? false;
+  }
 }
