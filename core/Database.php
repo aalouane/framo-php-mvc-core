@@ -24,23 +24,39 @@ class Database
   public function applyMigrations()
   {
     $this->createMigrationsTable();
-    $this->getApplieMigrations();
+    $appliedMig = $this->getApplieMigrations();
 
     $files = scandir(Application::$ROOT_PATH . "/migrations");
-    if (($key = array_search(".", $files)) !== false) {
-      unset($messages[$key]);
-    }
-    if (($key = array_search("..", $files)) !== false) {
-      unset($messages[$key]);
+    // delete the '.' and '..' records
+    if (($key = array_search(".", $files)) !== false) unset($files[$key]);
+    if (($key = array_search("..", $files)) !== false) unset($files[$key]);
+
+    $saveMig = [];
+
+    $toApplyMig = array_diff($files, $appliedMig);
+    foreach ($toApplyMig as $migration) {
+
+      require_once Application::$ROOT_PATH . '/migrations/' . $migration;
+      // get the class name == file name
+      $className = pathinfo($migration, PATHINFO_FILENAME);
+      $instance = new $className();
+      $this->log("Apply migration $migration");
+      $instance->up();
+      $this->log("Applied migration $migration");
+      $saveMig[] = $migration;
     }
 
-    var_dd($files);
+    if (!empty($saveMig)) {
+      $this->saveMigrations($saveMig);
+    } else {
+      $this->log("All migrations are applied");
+    }
   }
 
   public function createMigrationsTable()
   {
     $sql = "CREATE TABLE IF NOT EXISTS `migrations` (
-      `id` int(10) PRIMARY KEY NOT NULL,
+      `id` int(10) PRIMARY KEY AUTO_INCREMENT NOT NULL,
       `migration` varchar(255) NOT NULL,
       `created_at`timestamp NULL DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
@@ -56,5 +72,16 @@ class Database
     return $statement->fetchAll(\PDO::FETCH_COLUMN);
   }
 
+  public function saveMigrations($migrations)
+  {
+    $migration = implode(',', array_map(fn ($m) => "('$m')", $migrations));
 
+    $statement = $this->pdo->prepare("INSERT INTO migrations (migration) VALUES $migration");
+    $statement->execute();
+  }
+
+  protected function log($message)
+  {
+    echo "[".date('Y-m-d H:i:s')."] - ".$message. PHP_EOL;
+  }
 }

@@ -1,17 +1,17 @@
 <?php
 
-namespace app\migrations;
+// namespace app\migrations;
 
 class m002_something
 {
   public function UP()
   {
-    echo "something up";
+    echo "something up".PHP_EOL;
   }
 
   public function DOWN()
   {
-    echo "something down";
+    echo "something down".PHP_EOL;
   }
 
 }
