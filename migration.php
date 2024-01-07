@@ -18,38 +18,26 @@ $config = [
   ]
 ];
 
-$app = new Application(__DIR__, $config);
-
 // Arguments
 $args = [
   "refresh" => "Refresh database : delete all tables before migrations",
 ];
 
-var_dd($args);
-// Get args
-check_args();
-execute_args($args);
+$app = new Application(__DIR__, $config);
 
+check_args($argv);
 
 // Apply Migrations
 $app->db->applyMigrations();
 
 
+
 // FUNCTIONS
 
-function execute_args()
+
+function check_args(array $argv) 
 {
   global $app, $args;
-
-  // after checking all arguments, aply arguments
-  foreach ($args as $key => $val) {
-    $app->db->$key(); // call db methods
-  }
-}
-
-function check_args()
-{
-  global $args;
 
   if (isset($argv)) {
     array_shift($argv); // the first elem = the script name
@@ -69,8 +57,13 @@ function check_args()
           exit(-1);
         }
       }
-    } else {
-      echo "Args are disabled" . PHP_EOL;
+      // after checking all arguments, aply arguments
+      foreach ($args as $key => $val) {
+        $app->db->$key(); // call db methods
+      }
     }
+
+  } else {
+    echo "Args are disabled" . PHP_EOL;
   }
 }
