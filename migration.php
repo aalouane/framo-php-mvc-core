@@ -28,7 +28,7 @@ $args = [
 var_dd($args);
 // Get args
 check_args();
-execute_args();
+execute_args($args);
 
 
 // Apply Migrations
@@ -39,6 +39,8 @@ $app->db->applyMigrations();
 
 function execute_args()
 {
+  global $app, $args;
+
   // after checking all arguments, aply arguments
   foreach ($args as $key => $val) {
     $app->db->$key(); // call db methods
@@ -47,6 +49,8 @@ function execute_args()
 
 function check_args()
 {
+  global $args;
+
   if (isset($argv)) {
     array_shift($argv); // the first elem = the script name
 
