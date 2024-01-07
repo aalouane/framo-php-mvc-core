@@ -4,7 +4,7 @@
 
 use app\core\Application;
 
-class m001_initial
+class m001_users
 {
   public function UP()
   {

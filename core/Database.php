@@ -5,20 +5,36 @@ namespace app\core;
 class Database
 {
   public \PDO $pdo;
+  public array $config;
 
   public function __construct(array $config)
   {
-    $connection = $config['connection'] ?? '';
-    $host = $config['host'] ?? '';
-    $port = $config['port'] ?? '';
-    $db_name = $config['db_name'] ?? '';
-    $username = $config['username'] ?? '';
-    $password = $config['password'] ?? '';
+    $this->config = $config;
+    $this->connect();
+  }
+
+  private function connect()
+  {
+    $connection = $this->config['connection'] ?? '';
+    $host = $this->config['host'] ?? '';
+    $port = $this->config['port'] ?? '';
+    $db_name = $this->config['db_name'] ?? '';
+    $username = $this->config['username'] ?? '';
+    $password = $this->config['password'] ?? '';
 
     // mysql:host=127.0.0.1;dbname=framo
     $dsn = "$connection:host=$host;port=$port;dbname=$db_name";
     $this->pdo = new \PDO($dsn, $username, $password);
     $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+  }
+
+  public function refresh()
+  {
+    $sql = "drop database framo; create database framo;";
+    $this->pdo->exec($sql);
+    // reconnect to db
+    $this->connect();
   }
 
   public function applyMigrations()
@@ -33,20 +49,20 @@ class Database
     if (($key = array_search(".", $files)) !== false) unset($files[$key]);
     if (($key = array_search("..", $files)) !== false) unset($files[$key]);
     // modify all elem of files, to extract just the name 
-    $migrated = array_map(fn($file) => pathinfo($file, PATHINFO_FILENAME), $files);
+    $migrated = array_map(fn ($file) => pathinfo($file, PATHINFO_FILENAME), $files);
     // get the migrations must be migrate
     $toApplyMig = array_diff($migrated, $appliedMig);
 
     foreach ($toApplyMig as $migration) {
 
-      require_once Application::$ROOT_PATH . '/migrations/' . $migration.".php";
+      require_once Application::$ROOT_PATH . '/migrations/' . $migration . ".php";
       // get the class name == file name
       $migration = pathinfo($migration, PATHINFO_FILENAME);
       $instance = new $migration();
-      $this->log("Applying migration $migration");
+      // $this->log("Applying migration $migration");
       $instance->up();
       $this->log("Applied migration $migration");
-      
+
       $saveMig[] = $migration;
     }
 
@@ -86,6 +102,6 @@ class Database
 
   protected function log($message)
   {
-    echo "[".date('Y-m-d H:i:s')."] - ".$message. PHP_EOL;
+    echo "[" . date('Y-m-d H:i:s') . "] - " . $message . PHP_EOL;
   }
 }
