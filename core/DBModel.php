@@ -3,6 +3,7 @@
 namespace app\core;
 
 use app\core\Application;
+use \PDO;
 
 abstract class DBModel extends Model
 {
@@ -29,6 +30,17 @@ abstract class DBModel extends Model
     $statement->execute();
 
     return true;
+  }
+
+  public static function getValues(string $table, string $field, string $value)
+  {
+    $sql = "SELECT $field FROM $table WHERE $field = :value";
+    
+    $statement = Application::$app->db->pdo->prepare($sql);
+    $statement->bindValue(":value", $value);
+    $statement->execute();
+
+    return $statement->fetchObject();
   }
 
   public static function prepare($sql) {

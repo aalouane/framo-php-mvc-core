@@ -9,6 +9,7 @@ abstract class Model
   public const RULE_MIN = 'min';
   public const RULE_MAX = 'max';
   public const RULE_MATCH = 'match';
+  public const RULE_UNIQUE = 'unique';
 
   public array $errors = [];
 
@@ -54,6 +55,16 @@ abstract class Model
         if ($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']}) {
           $this->addError($modelField, self::RULE_MATCH, $rule);
         }
+
+        if($ruleName === self::RULE_UNIQUE) {
+          $tableName = $this->tableName();           
+          $record = DBModel::getValues($tableName, $modelField, $value);
+          // check for existing values
+          if($record) {
+            $this->addError($modelField, self::RULE_UNIQUE, ["attr"=>$modelField]);
+          }
+          
+        }
       }
     }
 
@@ -78,6 +89,7 @@ abstract class Model
       self::RULE_MIN      => "The min length of this field must be {min}",
       self::RULE_MAX      => "The max length of this field must be {max}",
       self::RULE_MATCH    => "The fields must be the same as {match}",
+      self::RULE_UNIQUE    => "The same field must be unique, but this value already exist",
     ];
   }
 

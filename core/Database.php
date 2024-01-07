@@ -73,6 +73,7 @@ class Database
     }
   }
 
+
   public function createMigrationsTable()
   {
     $sql = "CREATE TABLE IF NOT EXISTS `migrations` (
