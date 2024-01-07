@@ -23,6 +23,8 @@ class Database
 
   public function applyMigrations()
   {
+    $saveMig = [];
+
     $this->createMigrationsTable();
     $appliedMig = $this->getApplieMigrations();
 
@@ -30,19 +32,21 @@ class Database
     // delete the '.' and '..' records
     if (($key = array_search(".", $files)) !== false) unset($files[$key]);
     if (($key = array_search("..", $files)) !== false) unset($files[$key]);
+    // modify all elem of files, to extract just the name 
+    $migrated = array_map(fn($file) => pathinfo($file, PATHINFO_FILENAME), $files);
+    // get the migrations must be migrate
+    $toApplyMig = array_diff($migrated, $appliedMig);
 
-    $saveMig = [];
-
-    $toApplyMig = array_diff($files, $appliedMig);
     foreach ($toApplyMig as $migration) {
 
-      require_once Application::$ROOT_PATH . '/migrations/' . $migration;
+      require_once Application::$ROOT_PATH . '/migrations/' . $migration.".php";
       // get the class name == file name
-      $className = pathinfo($migration, PATHINFO_FILENAME);
-      $instance = new $className();
-      $this->log("Apply migration $migration");
+      $migration = pathinfo($migration, PATHINFO_FILENAME);
+      $instance = new $migration();
+      $this->log("Applying migration $migration");
       $instance->up();
       $this->log("Applied migration $migration");
+      
       $saveMig[] = $migration;
     }
 
