@@ -37,7 +37,7 @@ class User extends DBModel
   public function rules(): array
   {
     return [
-      'firstname' => [self::RULE_REQUIRED, self::RULE_UNIQUE],
+      'firstname' => [self::RULE_REQUIRED],
       'lastname' => [self::RULE_REQUIRED],
       'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, self::RULE_UNIQUE],
       'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 4], [self::RULE_MAX, 'max' => 24]],
