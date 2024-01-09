@@ -46,6 +46,7 @@ class LoginForm extends Model
       $this->addError("password", "Password incorrect");
       return false;
     }
+    echo "hh";
     
     return Application::$app->login($user);
   }

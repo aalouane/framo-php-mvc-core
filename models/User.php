@@ -2,9 +2,9 @@
 
 namespace app\models;
 
-use app\core\DBModel;
+use app\core\UserModel;
 
-class User extends DBModel
+class User extends UserModel
 {
   public const STATUS_INACTIVE = 0;
   public const STATUS_ACTIVE = 1;
@@ -31,6 +31,12 @@ class User extends DBModel
   public static function primaryKey(): string
   {
     return "id";
+  }
+  
+  // from abstract class UserModel
+  public function getUsername(): string
+  {
+    return $this->firstname;
   }
 
   public function save()

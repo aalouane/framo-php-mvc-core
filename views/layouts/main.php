@@ -1,7 +1,6 @@
-<?php 
-use app\core\Application;
+<?php
 
-// var_dd(Application::$app->user);
+use app\core\Application;
 ?>
 <!doctype html>
 <html lang="en">
@@ -31,24 +30,33 @@ use app\core\Application;
           </li>
         </ul>
 
-        <ul class="navbar-nav  ml-auto">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/login">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/register">Register</a>
-          </li>
-        </ul>
+        <?php if (Application::isGuest()) : ?>
+          <ul class="navbar-nav  ml-auto">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/register">Register</a>
+            </li>
+          </ul>
+        <?php else : ?>
+          <ul class="navbar-nav  ml-auto">
+            <li class="nav-item">
+              <span>Welcome <?= Application::$app->user->getUsername() ?></span>
+              <a class="nav-link active" aria-current="page" href="/logout">Login</a>
+            </li>
+          </ul>
+          <?php endif ?>
 
       </div>
     </div>
   </nav>
 
   <div class="container">
-    <?php if (Application::$app->session->getFlash("success")): ?>
-    <div class="alert alert-success" role="alert">
-      <?= Application::$app->session->getFlash("success") ?>
-    </div>
+    <?php if (Application::$app->session->getFlash("success")) : ?>
+      <div class="alert alert-success" role="alert">
+        <?= Application::$app->session->getFlash("success") ?>
+      </div>
     <?php endif; ?>
     {{content}}
   </div>

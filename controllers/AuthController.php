@@ -19,7 +19,8 @@ class AuthController extends Controller
   
   public function login()
   {
-    return $this->render("login", ["model" => new User()]);
+    $loginForm = new LoginForm();
+    return $this->render("login", ["model" => $loginForm]);
   }
 
   public function loginStore(Request $request)
@@ -28,12 +29,11 @@ class AuthController extends Controller
     $loginForm->loadData($request->getBody());
 
     if ($loginForm->validate() && $loginForm->login()) {
-      // Application::$app->session->setFlash('success', 'User Login successfully');
       Application::$app->response->redirect("/");
       return;
     }
 
-    return $this->render("register", ["model" => $user]);
+    return $this->render("login", ["model" => $loginForm]);
 
   }
 

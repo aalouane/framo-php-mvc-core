@@ -41,7 +41,14 @@ class Application
     if($primaryValue) {
       $primaryKey = $this->userClass::primaryKey();
       $this->user = $this->userClass::findOne([$primaryKey => $primaryValue]);
+    } else {
+      $this->user = null;
     }
+  }
+
+  public static function isGuest(): bool
+  {
+    return !self::$app->user;
   }
 
   public function run(): void
