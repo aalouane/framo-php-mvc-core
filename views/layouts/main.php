@@ -1,5 +1,7 @@
 <?php 
 use app\core\Application;
+
+// var_dd(Application::$app->user);
 ?>
 <!doctype html>
 <html lang="en">

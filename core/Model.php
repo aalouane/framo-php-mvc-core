@@ -40,20 +40,20 @@ abstract class Model
 
         // Check rules for model fields
         if ($ruleName === self::RULE_REQUIRED && !$value) {
-          $this->addError($modelField, self::RULE_REQUIRED);
+          $this->addErrorForRule($modelField, self::RULE_REQUIRED);
         }
         if ($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
-          $this->addError($modelField, self::RULE_EMAIL);
+          $this->addErrorForRule($modelField, self::RULE_EMAIL);
         }
         if ($ruleName === self::RULE_MIN && strlen($value) < $rule['min']) {
-          $this->addError($modelField, self::RULE_MIN, $rule);
+          $this->addErrorForRule($modelField, self::RULE_MIN, $rule);
         }
         if ($ruleName === self::RULE_MAX && strlen($value) > $rule['max']) {
-          $this->addError($modelField, self::RULE_MAX, $rule);
+          $this->addErrorForRule($modelField, self::RULE_MAX, $rule);
         }
         // {$rule['match']} = password
         if ($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']}) {
-          $this->addError($modelField, self::RULE_MATCH, $rule);
+          $this->addErrorForRule($modelField, self::RULE_MATCH, $rule);
         }
 
         if($ruleName === self::RULE_UNIQUE) {
@@ -61,7 +61,7 @@ abstract class Model
           $record = DBModel::getValues($tableName, $modelField, $value);
           // check for existing values
           if($record) {
-            $this->addError($modelField, self::RULE_UNIQUE, ["attr"=>$modelField]);
+            $this->addErrorForRule($modelField, self::RULE_UNIQUE, ["attr"=>$modelField]);
           }
           
         }
@@ -71,13 +71,18 @@ abstract class Model
     return empty($this->errors);
   }
 
-  public function addError(string $modelField, string $rule, array $params = [])
+  private function addErrorForRule(string $modelField, string $rule, array $params = [])
   {
     $message = $this->errorMessage()[$rule] ?? '';
     foreach ($params as $key => $value) {
       $message = str_replace("{{$key}}", $value, $message);
     }
 
+    $this->errors[$modelField][] = $message;
+  }
+
+  public function addError(string $modelField, string $message)
+  {
     $this->errors[$modelField][] = $message;
   }
 

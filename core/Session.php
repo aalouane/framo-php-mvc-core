@@ -21,6 +21,21 @@ class Session
     
   }
 
+  public function get(string $key) : string
+  {
+    return $_SESSION[$key] ?? false;
+  }
+
+  public function set(string $key, string $value) : void
+  {
+    $_SESSION[$key] = $value;
+  }
+
+  public function remove(string $key) : void
+  {
+    unset($_SESSION[$key]);
+  }
+
   public function setFlash(string $key, string $message)
   {
     $_SESSION[self::FLASH_KEY][$key] = [

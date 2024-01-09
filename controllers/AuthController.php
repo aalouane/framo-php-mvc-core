@@ -6,6 +6,7 @@ use app\core\Application;
 use app\core\Controller;
 use app\core\Request;
 use app\models\User;
+use app\models\LoginForm;
 
 class AuthController extends Controller
 {
@@ -15,10 +16,25 @@ class AuthController extends Controller
     $this->setLayout('auth');
     
   }
-
+  
   public function login()
   {
-    return $this->render("login");
+    return $this->render("login", ["model" => new User()]);
+  }
+
+  public function loginStore(Request $request)
+  {
+    $loginForm = new LoginForm();
+    $loginForm->loadData($request->getBody());
+
+    if ($loginForm->validate() && $loginForm->login()) {
+      // Application::$app->session->setFlash('success', 'User Login successfully');
+      Application::$app->response->redirect("/");
+      return;
+    }
+
+    return $this->render("register", ["model" => $user]);
+
   }
 
   public function register()
