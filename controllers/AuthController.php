@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\core\Application;
 use app\core\Controller;
 use app\core\Request;
+use app\core\Response;
 use app\models\User;
 use app\models\LoginForm;
 
@@ -23,13 +24,13 @@ class AuthController extends Controller
     return $this->render("login", ["model" => $loginForm]);
   }
 
-  public function loginStore(Request $request)
+  public function loginStore(Request $request, Response $response)
   {
     $loginForm = new LoginForm();
     $loginForm->loadData($request->getBody());
 
     if ($loginForm->validate() && $loginForm->login()) {
-      Application::$app->response->redirect("/");
+      $response->redirect("/");
       return;
     }
 
@@ -50,16 +51,17 @@ class AuthController extends Controller
 
     if($user->validate() && $user->save()) {
       Application::$app->session->setFlash('success', 'User registered successfully');
-      Application::$app->response->redirect("/");
+      $response->redirect("/");
     }
 
     return $this->render("register", ["model" => $user]);
   }
 
-  public function logout(): void  
+  // Soufiane i must specify the "Request $request" parameter to use $response correctly !!! parameter order
+  public function logout(Request $request,Response $response): void  
   {
     Application::$app->logout();
-    Application::$app->response->redirect("/");
+    $response->redirect("/");
     return;
   }
 
