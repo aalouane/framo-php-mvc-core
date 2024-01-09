@@ -2,8 +2,6 @@
 
 namespace app\core;
 
-use app\controllers\Controller;
-
 /**
  * undocumented class
  */
@@ -56,15 +54,6 @@ class Application
     echo $this->router->resolve();
   }
 
-  public function getController(): Controller
-  {
-    return $this->controller;
-  }
-
-  public function setController(Controller $controller): void
-  {
-    $this->controller = $controller;
-  }
 
   public function login(DBModel $user): bool
   {

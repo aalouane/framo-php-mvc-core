@@ -14,10 +14,11 @@ class AuthController extends Controller
 
   public function __construct()
   {
+    $this->middlewares[] = ["profile"];
+
     $this->setLayout('auth');
-    
   }
-  
+
   public function login()
   {
     $loginForm = new LoginForm();
@@ -35,12 +36,11 @@ class AuthController extends Controller
     }
 
     return $this->render("login", ["model" => $loginForm]);
-
   }
 
   public function register()
   {
-    return $this->render("register", ["model"=> new User()]);
+    return $this->render("register", ["model" => new User()]);
   }
 
   public function registerStore(Request $request)
@@ -49,7 +49,7 @@ class AuthController extends Controller
     $user->loadData($request->getBody());
 
 
-    if($user->validate() && $user->save()) {
+    if ($user->validate() && $user->save()) {
       Application::$app->session->setFlash('success', 'User registered successfully');
       $response->redirect("/");
     }
@@ -63,11 +63,10 @@ class AuthController extends Controller
   }
 
   // Soufiane i must specify the "Request $request" parameter to use $response correctly !!! parameter order
-  public function logout(Request $request,Response $response): void  
+  public function logout(Request $request, Response $response): void
   {
     Application::$app->logout();
     $response->redirect("/");
     return;
   }
-
 }

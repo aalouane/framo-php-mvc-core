@@ -51,8 +51,16 @@ class Router
     }
 
     if (is_array($callback)) {
-      // for call_user_func()
-      $callback[0] = new $callback[0]();
+      // [AuthController::class, 'profile']
+      Application::$app->controller = new $callback[0]();
+      $controller = Application::$app->controller;
+      $controller->action = $callback[1];
+      $callback[0] = $controller;
+
+      foreach ($controller->getMiddlewares() as $middleware) {
+        $middleware->execute();
+
+      }
     }
 
     return call_user_func($callback, $this->request, $this->response);
