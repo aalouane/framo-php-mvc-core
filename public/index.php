@@ -32,6 +32,7 @@ $app->router->post('/register', [AuthController::class, 'registerStore']);
 $app->router->get('/logout', [AuthController::class, 'logout']);
 $app->router->get('/contact', [SiteController::class, 'contact']);
 $app->router->post('/contact', [SiteController::class, 'handlingContact']);
+$app->router->get('/profile', [AuthController::class, 'profile']);
 
 
 // Lunch the main app

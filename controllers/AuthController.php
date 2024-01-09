@@ -57,6 +57,11 @@ class AuthController extends Controller
     return $this->render("register", ["model" => $user]);
   }
 
+  public function profile()
+  {
+    return $this->render("profile");
+  }
+
   // Soufiane i must specify the "Request $request" parameter to use $response correctly !!! parameter order
   public function logout(Request $request,Response $response): void  
   {
