@@ -2,6 +2,9 @@
 
 namespace app\core;
 
+// use app\core\exceptions\ForbiddenException;
+use app\core\exceptions\NotFoundException;
+
 /**
  * undocumented class
  */
@@ -42,8 +45,9 @@ class Router
     $callback = $this->routes[$method][$path] ?? false;
 
     if ($callback == false) {
-      $this->response->setStatusCode(404);
-      return $this->renderView("_404");
+      
+      throw new NotFoundException();
+      //  return $this->renderView("_404");
     }
 
     if (is_string($callback)) {
@@ -59,7 +63,6 @@ class Router
 
       foreach ($controller->getMiddlewares() as $middleware) {
         $middleware->execute();
-
       }
     }
 

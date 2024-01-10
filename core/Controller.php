@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use app\core\middlewares\BaseMiddleware;
+
 class Controller
 {
 
@@ -18,7 +20,7 @@ class Controller
     return Application::$app->router->setLayout($layout);
   }
 
-  public function registerMiddleware(BaseMiddleware $middleware): void
+  public function registerMiddleware(BaseMiddleware $middleware)
   {
     $this->middlewares[] = $middleware;
   }
