@@ -14,7 +14,13 @@ ini_set ('display_errors', 1);
 
 
 $config = [
-  'userClass' => \app\models\User::class,
+  'app' => [
+    'name' => $_ENV["APP_NAME"],
+    'env' => $_ENV["APP_ENV"],
+    'debug' => $_ENV["APP_DEBUG"],
+    'url' => $_ENV["APP_URL"],
+  ],
+  'userClass' => \app\models\User::class, // Soufiane To think
   'db' => [
     'connection'    => $_ENV['DB_CONNECTION'],
     'host'          => $_ENV['DB_HOST'],

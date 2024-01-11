@@ -6,13 +6,17 @@ use app\core\Application;
 
 class Database
 {
+  // to have just one Instance of Database on all life application
+  public static ?\PDO $instance = null;
+
   public \PDO $pdo;
   public array $config;
-
+  
   public function __construct(array $config)
   {
     $this->config = $config;
-    $this->connect();
+    $this->pdo = (Database::$instance) ? Database::$instance : $this->connect();
+    
   }
 
   private function connect()
@@ -26,9 +30,12 @@ class Database
 
     // mysql:host=127.0.0.1;dbname=framo
     $dsn = "$connection:host=$host;port=$port;dbname=$db_name";
-    $this->pdo = new \PDO($dsn, $username, $password);
-    $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
+    $pdo = new \PDO($dsn, $username, $password);
+    $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+    // Instance Singelton
+    Database::$instance = $pdo;
+    
+    return $pdo;
   }
 
   public function refresh()

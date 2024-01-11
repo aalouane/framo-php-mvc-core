@@ -26,6 +26,8 @@ class Application
   public string $userClass;
   public string $layout = "main";
   
+
+  
   public function __construct(string $rootpath, array $config)
   {
     self::$ROOT_PATH = $rootpath;
@@ -47,6 +49,7 @@ class Application
     } else {
       $this->user = null;
     }
+  
   }
 
   public static function isGuest(): bool

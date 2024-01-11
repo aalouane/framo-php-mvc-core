@@ -12,14 +12,13 @@ use app\models\User;
 
 class AuthController extends Controller
 {
-
+  
   public function __construct()
   {
     // $this->middlewares[] = ["profile"];
     
     // $this->setLayout('main');
     $this->registerMiddleware(new AuthMiddleware(["profile"]));
-    
     $this->setLayout('auth');
   }
 
