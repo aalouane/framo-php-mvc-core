@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use app\core\db\DBModel;
+
 abstract class Model
 {
   public const RULE_REQUIRED = 'required';

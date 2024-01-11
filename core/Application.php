@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use app\core\db\Database;
+
 /**
  * undocumented class
  */
@@ -18,7 +20,7 @@ class Application
   public Response $response;
   public Session $session;
   public Database $db;
-  public ?DBModel $user;
+  public ?UserModel $user;
   public View $view;
 
   public string $userClass;
@@ -63,7 +65,7 @@ class Application
   }
 
 
-  public function login(DBModel $user): bool
+  public function login(UserModel $user): bool
   {
     $this->user = $user;
     $primaryKey = $user->primaryKey();
