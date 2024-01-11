@@ -3,7 +3,6 @@ Problems to search
 global $arv; in a function, even if it not exists, it will be created on function ??
 
 
->> Try to import Application on all project without use app\core\Application
 >> Try to use router, request, .... easily : 
 Application::$app->router  ==> App:router | Application::$router
 
@@ -16,6 +15,3 @@ To prevent a CSRF attack a framework can choose to add a certain validation to a
 
 >> https://doeken.org/blog/middleware-pattern-in-php#:~:text=Middleware%20in%20PHP%20is%20a,output%2C%20right%20in%20the%20middle.
 
-
->> one instance of db ==> sisngleton
->> one instance of configuration ==> sisngleton

@@ -2,7 +2,7 @@
 
 namespace app\core;
 
-use app\core\db\DBModel;
+use app\core\db\DbModel;
 
 abstract class Model
 {
@@ -60,7 +60,7 @@ abstract class Model
 
         if($ruleName === self::RULE_UNIQUE) {
           $tableName = $this->tableName();           
-          $record = DBModel::getValues($tableName, $modelField, $value);
+          $record = DbModel::getValues($tableName, $modelField, $value);
           // check for existing values
           if($record) {
             $this->addErrorForRule($modelField, self::RULE_UNIQUE, ["attr"=>$modelField]);

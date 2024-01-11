@@ -6,7 +6,7 @@ use app\core\Application;
 use app\core\Model;
 use \PDO;
 
-abstract class DBModel extends Model
+abstract class DbModel extends Model
 {
 
   abstract public static function tableName(): string;

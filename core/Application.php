@@ -3,6 +3,7 @@
 namespace app\core;
 
 use app\core\db\Database;
+use app\core\db\DbModel;
 
 /**
  * undocumented class
@@ -20,14 +21,13 @@ class Application
   public Response $response;
   public Session $session;
   public Database $db;
-  public ?UserModel $user;
+  public ?DbModel $user;
   public View $view;
 
   public string $userClass;
   public string $layout = "main";
   
 
-  
   public function __construct(string $rootpath, array $config)
   {
     self::$ROOT_PATH = $rootpath;
@@ -68,7 +68,7 @@ class Application
   }
 
 
-  public function login(UserModel $user): bool
+  public function login(DbModel $user): bool
   {
     $this->user = $user;
     $primaryKey = $user->primaryKey();

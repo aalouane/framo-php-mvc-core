@@ -2,9 +2,9 @@
 
 namespace app\models;
 
-use app\core\UserModel;
+use app\core\db\DbModel;
 
-class User extends UserModel
+class User extends DbModel
 {
   public const STATUS_INACTIVE = 0;
   public const STATUS_ACTIVE = 1;

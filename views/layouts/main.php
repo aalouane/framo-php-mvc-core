@@ -45,7 +45,7 @@ use app\core\Application;
               <a class="nav-link active" aria-current="page" href="/profile">Profile</a>
             </li>
             <li class="nav-item">
-              <span>Welcome <?= Application::$app->user->getUsername() ?></span>
+              <span>Welcome <?= Application::$app->user->firstname ?></span>
               <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
             </li>
           </ul>
