@@ -9,10 +9,11 @@ class Controller
 
   public string $action = '';
   protected array $middlewares = []; // array of BaseMiddlewares
+  public string $layout = "main";  // it can be changed on childs 
 
   public function render($view, $params = array())
   {
-    return Application::$app->router->renderView($view, $params);
+    return Application::$app->view->renderView($view, $params);
   }
 
   public function setLayout($layout)

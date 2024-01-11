@@ -7,8 +7,8 @@ use app\core\Controller;
 use app\core\middlewares\AuthMiddleware;
 use app\core\Request;
 use app\core\Response;
-use app\models\User;
 use app\models\LoginForm;
+use app\models\User;
 
 class AuthController extends Controller
 {

@@ -19,9 +19,11 @@ class Application
   public Session $session;
   public Database $db;
   public ?DBModel $user;
+  public View $view;
 
   public string $userClass;
-
+  public string $layout = "main";
+  
   public function __construct(string $rootpath, array $config)
   {
     self::$ROOT_PATH = $rootpath;
@@ -32,6 +34,7 @@ class Application
     $this->router = new Router($this->request, $this->response);
     $this->session = new Session();
     $this->db = new Database($config['db']);
+    $this->view = new View();
 
     // Get user information from session if available
     $this->userClass = $config['userClass'];
@@ -55,7 +58,7 @@ class Application
       echo $this->router->resolve();
     }catch (\Exception $e) {
       $this->response->setStatusCode($e->getCode());
-      echo $this->router->renderView("_error", ["exceptions" => $e]);
+      echo $this->view->renderView("_error", ["exceptions" => $e]);
     }
   }
 
