@@ -16,7 +16,6 @@ class Database
   {
     $this->config = $config;
     $this->pdo = (Database::$instance) ? Database::$instance : $this->connect();
-    
   }
 
   private function connect()
@@ -32,6 +31,7 @@ class Database
     $dsn = "$connection:host=$host;port=$port;dbname=$db_name";
     $pdo = new \PDO($dsn, $username, $password);
     $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+    
     // Instance Singelton
     Database::$instance = $pdo;
     
